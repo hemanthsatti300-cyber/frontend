@@ -5,7 +5,7 @@ import axios from "axios";
 ====================================================== */
 
 const API = axios.create({
-    baseURL: "backend-production-9ab6.up.railway.app/api",
+    baseURL: "https://backend-production-9ab6.up.railway.app/api",
 
     timeout: 15000,
 
