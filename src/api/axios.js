@@ -5,16 +5,15 @@ import axios from "axios";
 ====================================================== */
 
 const API = axios.create({
-    baseURL: "https://backend-production-9ab6.up.railway.app/api",
+    baseURL: "https://backend-ovt9.onrender.com/api",
 
-    timeout: 15000,
+    timeout: 30000,
 
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
     },
 });
-
 /* ======================================================
    PUBLIC ENDPOINTS
 
