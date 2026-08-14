@@ -5,7 +5,7 @@ import axios from "axios";
 ====================================================== */
 
 const API = axios.create({
-    baseURL: "https://agent-6a7decacc5a0a1ca77--bespoke-begonia-5037cf.netlify.app",
+    baseURL: "https://backend-fwcy.onrender.com/api",
 
     timeout: 15000,
 
