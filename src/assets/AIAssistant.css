@@ -1,0 +1,1067 @@
+/* =========================================================
+   SENTINELCORE AI ASSISTANT
+   RIGHT-SIDE FLOATING AI
+========================================================= */
+
+
+/* =========================================================
+   AI FLOATING BUTTON
+========================================================= */
+
+.ai-floating-button {
+    position: fixed;
+
+    /* RIGHT SIDE */
+    right: 25px;
+    left: auto;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 70px;
+    height: 70px;
+
+    border: 3px solid #2563eb;
+
+    border-radius: 50%;
+
+    background: #0f172a;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    z-index: 99999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.15),
+        0 8px 30px rgba(0, 0, 0, 0.45);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+/* =========================================================
+   AI IMAGE
+========================================================= */
+
+.ai-floating-button img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.ai-floating-button:hover {
+    transform:
+        translateY(-50%)
+        scale(1.08);
+
+    box-shadow:
+        0 0 0 6px rgba(37, 99, 235, 0.18),
+        0 12px 35px rgba(0, 0, 0, 0.55);
+}
+
+
+/* =========================================================
+   WHEN AI PANEL IS OPEN
+========================================================= */
+
+.ai-button-open {
+    border-color: #22c55e;
+
+    box-shadow:
+        0 0 0 5px rgba(34, 197, 94, 0.15),
+        0 10px 35px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================================================
+   PULSE INDICATOR
+========================================================= */
+
+.ai-pulse {
+    position: absolute;
+
+    top: -3px;
+
+    right: -3px;
+
+    width: 14px;
+
+    height: 14px;
+
+    background: #22c55e;
+
+    border: 3px solid #0f172a;
+
+    border-radius: 50%;
+
+    animation: aiPulse 1.8s infinite;
+}
+
+
+@keyframes aiPulse {
+
+    0% {
+        box-shadow:
+            0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+
+    70% {
+        box-shadow:
+            0 0 0 9px rgba(34, 197, 94, 0);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+
+/* =========================================================
+   AI PANEL
+   Opens to the LEFT of the right-side button
+========================================================= */
+
+.ai-panel {
+    position: fixed;
+
+    /* RIGHT SIDE */
+    right: 110px;
+
+    left: auto;
+
+    bottom: 25px;
+
+    width: 420px;
+
+    height: 620px;
+
+    background: #111827;
+
+    border: 1px solid #334155;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    z-index: 99998;
+
+    display: flex;
+
+    flex-direction: column;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.65);
+
+    animation: aiPanelOpen 0.25s ease;
+}
+
+
+/* =========================================================
+   PANEL OPEN ANIMATION
+========================================================= */
+
+@keyframes aiPanelOpen {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateX(20px)
+            scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.ai-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 18px;
+
+    background: #172033;
+
+    border-bottom: 1px solid #263244;
+}
+
+
+/* =========================================================
+   AI TITLE
+========================================================= */
+
+.ai-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   AI SMALL AVATAR
+========================================================= */
+
+.ai-small-avatar {
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    border: 2px solid #2563eb;
+
+    flex-shrink: 0;
+}
+
+
+.ai-small-avatar img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   TITLE TEXT
+========================================================= */
+
+.ai-title h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 16px;
+}
+
+
+.ai-title span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+========================================================= */
+
+.ai-header-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   AI STATUS
+========================================================= */
+
+.ai-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #22c55e;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUS DOT
+========================================================= */
+
+.status-dot {
+    width: 8px;
+
+    height: 8px;
+
+    background: #22c55e;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px #22c55e;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.ai-close-button {
+    width: 30px;
+
+    height: 30px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #263244;
+
+    color: #cbd5e1;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    line-height: 1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: 0.2s ease;
+}
+
+
+.ai-close-button:hover {
+    background: #ef4444;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   CHAT WINDOW
+========================================================= */
+
+.chat-window {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 18px;
+
+    background: #0f172a;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.chat-window::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.chat-window::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+
+.chat-window::-webkit-scrollbar-thumb {
+    background: #334155;
+
+    border-radius: 10px;
+}
+
+
+.chat-window::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.ai-welcome {
+    text-align: center;
+
+    padding: 25px 10px;
+
+    color: #cbd5e1;
+}
+
+
+.welcome-ai-image {
+    width: 85px;
+
+    height: 85px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 3px solid #2563eb;
+
+    margin-bottom: 10px;
+}
+
+
+.ai-welcome h3 {
+    margin: 5px 0 8px;
+
+    color: #ffffff;
+
+    font-size: 18px;
+}
+
+
+.ai-welcome p {
+    color: #94a3b8;
+
+    line-height: 1.5;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LOGIN REQUIRED
+========================================================= */
+
+.login-required {
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    background:
+        rgba(245, 158, 11, 0.1);
+
+    border:
+        1px solid rgba(245, 158, 11, 0.35);
+
+    border-radius: 8px;
+
+    color: #fbbf24;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   USER MESSAGE
+========================================================= */
+
+.user-message {
+    max-width: 80%;
+
+    margin-left: auto;
+
+    margin-bottom: 14px;
+
+    padding: 11px 14px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    border-radius:
+        14px
+        14px
+        3px
+        14px;
+}
+
+
+.user-message strong {
+    font-size: 11px;
+
+    opacity: 0.8;
+}
+
+
+.user-message p {
+    margin: 5px 0 0;
+
+    line-height: 1.5;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   AI MESSAGE
+========================================================= */
+
+.ai-message {
+    max-width: 85%;
+
+    margin-right: auto;
+
+    margin-bottom: 14px;
+
+    padding: 12px 14px;
+
+    background: #1e293b;
+
+    border: 1px solid #334155;
+
+    color: #e2e8f0;
+
+    border-radius:
+        14px
+        14px
+        14px
+        3px;
+}
+
+
+/* =========================================================
+   AI MESSAGE HEADER
+========================================================= */
+
+.ai-message-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 7px;
+}
+
+
+.ai-message-header strong {
+    color: #60a5fa;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MESSAGE AVATAR
+========================================================= */
+
+.message-avatar {
+    width: 25px;
+
+    height: 25px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+
+.message-avatar img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   AI MESSAGE TEXT
+========================================================= */
+
+.ai-message p {
+    margin: 0;
+
+    line-height: 1.55;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+.suggestions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 10px;
+}
+
+
+.suggestions button {
+    padding: 6px 10px;
+
+    border:
+        1px solid #3b82f6;
+
+    border-radius: 20px;
+
+    background: transparent;
+
+    color: #60a5fa;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    transition: 0.2s ease;
+}
+
+
+.suggestions button:hover {
+    background: #2563eb;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TYPING CONTAINER
+========================================================= */
+
+.typing {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 12px;
+
+    width: fit-content;
+
+    background: #1e293b;
+
+    border-radius: 10px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+.typing-avatar {
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   TYPING DOTS
+========================================================= */
+
+.typing-dots {
+    display: flex;
+
+    gap: 3px;
+}
+
+
+.typing-dots span {
+    width: 5px;
+
+    height: 5px;
+
+    background: #60a5fa;
+
+    border-radius: 50%;
+
+    animation: typing 1.2s infinite;
+}
+
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+
+@keyframes typing {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+
+        opacity: 0.4;
+    }
+
+    30% {
+        transform: translateY(-4px);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   CHAT INPUT
+========================================================= */
+
+.chat-input {
+    display: flex;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    background: #172033;
+
+    border-top: 1px solid #263244;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.chat-input input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 11px 12px;
+
+    border: 1px solid #334155;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #0f172a;
+
+    color: #ffffff;
+
+    font-size: 13px;
+}
+
+
+.chat-input input::placeholder {
+    color: #64748b;
+}
+
+
+.chat-input input:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+.chat-input button {
+    width: 65px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+
+.chat-input button:hover {
+    background: #1d4ed8;
+}
+
+
+.chat-input button:disabled {
+    background: #334155;
+
+    color: #64748b;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   SECURITY NOTICE
+========================================================= */
+
+.ai-security-notice {
+    padding: 8px;
+
+    text-align: center;
+
+    background: #0b1220;
+
+    border-top: 1px solid #1e293b;
+
+    color: #64748b;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   LARGE SCREENS
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .ai-floating-button {
+        right: 30px;
+
+        width: 72px;
+
+        height: 72px;
+    }
+
+    .ai-panel {
+        right: 120px;
+
+        width: 440px;
+
+        height: 650px;
+    }
+}
+
+
+/* =========================================================
+   TABLET / SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .ai-floating-button {
+        right: 20px;
+
+        width: 65px;
+
+        height: 65px;
+    }
+
+    .ai-panel {
+        right: 95px;
+
+        width: 400px;
+
+        height: 600px;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .ai-floating-button {
+        right: 15px;
+
+        width: 60px;
+
+        height: 60px;
+    }
+
+    .ai-panel {
+        right: 85px;
+
+        width: 370px;
+
+        height: 580px;
+    }
+
+    .ai-title span {
+        display: none;
+    }
+
+    .ai-status {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .ai-floating-button {
+        position: fixed;
+
+        right: 15px;
+
+        left: auto;
+
+        top: auto;
+
+        bottom: 25px;
+
+        transform: none;
+
+        width: 58px;
+
+        height: 58px;
+    }
+
+
+    .ai-floating-button:hover {
+        transform: scale(1.08);
+    }
+
+
+    .ai-panel {
+        position: fixed;
+
+        left: 10px;
+
+        right: 10px;
+
+        bottom: 15px;
+
+        width: auto;
+
+        height: 75vh;
+
+        max-height: 650px;
+
+        border-radius: 16px;
+    }
+
+
+    .ai-message,
+    .user-message {
+        max-width: 90%;
+    }
+
+
+    .ai-title span {
+        display: none;
+    }
+
+
+    .ai-status {
+        display: none;
+    }
+
+
+    .chat-input {
+        padding: 10px;
+    }
+
+
+    .chat-input input {
+        font-size: 14px;
+    }
+
+
+    .chat-input button {
+        width: 60px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .ai-floating-button {
+        right: 12px;
+
+        bottom: 18px;
+
+        width: 54px;
+
+        height: 54px;
+    }
+
+
+    .ai-panel {
+        left: 5px;
+
+        right: 5px;
+
+        bottom: 5px;
+
+        height: 85vh;
+
+        border-radius: 14px;
+    }
+
+
+    .ai-header {
+        padding: 12px;
+    }
+
+
+    .ai-small-avatar {
+        width: 36px;
+
+        height: 36px;
+    }
+
+
+    .ai-title h2 {
+        font-size: 14px;
+    }
+
+
+    .ai-message {
+        max-width: 92%;
+    }
+
+
+    .user-message {
+        max-width: 92%;
+    }
+}
