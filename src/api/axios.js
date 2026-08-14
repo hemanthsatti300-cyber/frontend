@@ -5,7 +5,7 @@ import axios from "axios";
 ====================================================== */
 
 const API = axios.create({
-    baseURL: "https://backend-fwcy.onrender.com/api",
+    baseURL: "backend-production-9ab6.up.railway.app/api",
 
     timeout: 15000,
 
