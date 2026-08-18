@@ -18,7 +18,7 @@ function Footer() {
         </div>
 
         <div>
-          <h3>SentinelCore SecureOps</h3>
+          <h3>Cloud Security Monitoring System</h3>
           <p>
             Enterprise Infrastructure Monitoring &
             Security Operations Center
@@ -65,7 +65,7 @@ function Footer() {
           <FaLinkedin />
         </a>
 
-        <p>© {year} SentinelCore SecureOps</p>
+        <p>© {year} Cloud Security Monitoring System</p>
 
         <small>
           Built with React • Spring Boot • PostgreSQL
