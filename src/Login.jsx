@@ -277,7 +277,7 @@ function Login() {
           <FaShieldAlt />
 
           <h1>
-            SentinelCore
+           Cloud Security 
           </h1>
 
         </div>
@@ -288,7 +288,7 @@ function Login() {
         ==================================== */}
 
         <h2>
-          SecureOps Login
+          Monitoring System Login
         </h2>
 
         <p>
