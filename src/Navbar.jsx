@@ -147,7 +147,7 @@ function Navbar() {
           <div className="navbar-brand">
 
             <h2>
-              🛡️ SentinelCore SecureOps
+              🛡️ Cloud Security Monitoring System
             </h2>
 
             <p>
