@@ -130,7 +130,7 @@ function Register() {
       >
         <div className="logo">
           <FaShieldAlt />
-          <h1>SentinelCore</h1>
+          <h1>Cloud Security Monitoring System </h1>
         </div>
 
         <h2>Create Account</h2>
