@@ -115,7 +115,7 @@ function Login() {
       if (success) {
 
         toast.success(
-          "Login successful! Welcome to SentinelCore 🎉"
+          "Login successful! Welcome to Cloud Security Monitoring System 🎉"
         );
 
       }
