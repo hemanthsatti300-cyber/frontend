@@ -1,49 +1,62 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { askAI } from "../api/aiApi";
 import "./AIAssistant.css";
-
 import aiAgentIcon from "./ai-agent.png";
 
 export default function AIAssistant() {
+
+    const navigate = useNavigate();
+
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    // =====================================================
+    // SEND MESSAGE
+    // =====================================================
+
     const sendMessage = async () => {
+
         const text = message.trim();
 
         if (!text || loading) {
             return;
         }
 
-        // Add user message to UI
+        // =================================================
+        // ADD USER MESSAGE
+        // =================================================
+
         setMessages((prev) => [
             ...prev,
             {
                 type: "user",
-                text: text,
-            },
+                text: text
+            }
         ]);
 
         setMessage("");
 
-        // ==========================================
-        // CHECK JWT TOKEN
-        // ==========================================
+        // =================================================
+        // CHECK TOKEN
+        // =================================================
 
         const token = localStorage.getItem("token");
 
         console.log(
-            "AI Token:",
+            "🤖 AI Token:",
             token ? "Available" : "Not Available"
         );
 
-        // ==========================================
+        // =================================================
         // NO TOKEN
-        // ==========================================
+        // =================================================
 
         if (!token) {
+
             setMessages((prev) => [
                 ...prev,
                 {
@@ -51,36 +64,95 @@ export default function AIAssistant() {
                     answer:
                         "🔐 Please login to use SentinelCore AI.",
                     authRequired: true,
-                },
+                    action: "NONE",
+                    route: null,
+                    suggestions: [
+                        "Go to Login"
+                    ]
+                }
             ]);
 
             return;
         }
 
-        // ==========================================
-        // CALL AI API
-        // ==========================================
+        // =================================================
+        // START LOADING
+        // =================================================
 
         setLoading(true);
 
         try {
+
+            // =================================================
+            // CALL AI API
+            // =================================================
+
             const response = await askAI(text);
+
+            console.log(
+                "🤖 SentinelCore AI Response:",
+                response
+            );
+
+            // =================================================
+            // ADD AI RESPONSE
+            // =================================================
 
             setMessages((prev) => [
                 ...prev,
                 {
                     type: "ai",
+
                     answer:
                         response?.answer ||
                         "No response received from SentinelCore AI.",
 
+                    action:
+                        response?.action ||
+                        "NONE",
+
+                    route:
+                        response?.route ||
+                        null,
+
+                    data:
+                        response?.data ||
+                        null,
+
                     suggestions:
-                        response?.suggestions || [],
-                },
+                        response?.suggestions ||
+                        []
+                }
             ]);
+
+            // =================================================
+            // AI NAVIGATION
+            // =================================================
+
+            if (
+                response?.action === "NAVIGATE" &&
+                response?.route
+            ) {
+
+                console.log(
+                    "🧭 AI Navigation:",
+                    response.route
+                );
+
+                setTimeout(() => {
+
+                    navigate(response.route);
+
+                    // Close AI after navigation
+                    setIsOpen(false);
+
+                }, 700);
+            }
+
         } catch (error) {
+
             console.error(
-                "SentinelCore AI Error:",
+                "❌ SentinelCore AI Error:",
                 error
             );
 
@@ -90,53 +162,102 @@ export default function AIAssistant() {
             let errorMessage =
                 "Unable to connect to SentinelCore AI.";
 
+            // =================================================
+            // 401
+            // =================================================
+
             if (status === 401) {
+
                 errorMessage =
                     "🔐 Your session has expired. Please login again.";
+
+                localStorage.removeItem("token");
             }
 
-            if (status === 403) {
+            // =================================================
+            // 403
+            // =================================================
+
+            else if (status === 403) {
+
                 errorMessage =
                     "⛔ You are not authorized to use SentinelCore AI.";
             }
 
-            if (status === 404) {
+            // =================================================
+            // 404
+            // =================================================
+
+            else if (status === 404) {
+
                 errorMessage =
-                    "AI service endpoint was not found.";
+                    "❌ AI service endpoint was not found.";
             }
 
-            if (status >= 500) {
+            // =================================================
+            // 500+
+            // =================================================
+
+            else if (status >= 500) {
+
                 errorMessage =
-                    "AI server error. Please try again later.";
+                    "⚠️ AI server error. Please try again later.";
             }
+
+            // =================================================
+            // ADD ERROR TO CHAT
+            // =================================================
 
             setMessages((prev) => [
                 ...prev,
                 {
                     type: "ai",
                     answer: errorMessage,
-                },
+                    action: "NONE",
+                    route: null,
+                    suggestions: []
+                }
             ]);
+
         } finally {
+
             setLoading(false);
         }
     };
 
+    // =====================================================
+    // SUGGESTION
+    // =====================================================
+
     const handleSuggestion = (suggestion) => {
+
         setMessage(suggestion);
+
     };
 
+    // =====================================================
+    // KEYBOARD
+    // =====================================================
+
     const handleKeyDown = (event) => {
+
         if (
             event.key === "Enter" &&
             !event.shiftKey
         ) {
+
             event.preventDefault();
+
             sendMessage();
         }
     };
 
-    const token = localStorage.getItem("token");
+    const token =
+        localStorage.getItem("token");
+
+    // =====================================================
+    // COMPONENT
+    // =====================================================
 
     return (
         <>
@@ -154,6 +275,7 @@ export default function AIAssistant() {
                 }
                 title="SentinelCore AI"
             >
+
                 <img
                     src={aiAgentIcon}
                     alt="SentinelCore AI"
@@ -162,6 +284,7 @@ export default function AIAssistant() {
                 {!isOpen && (
                     <span className="ai-pulse"></span>
                 )}
+
             </button>
 
 
@@ -170,31 +293,40 @@ export default function AIAssistant() {
             ================================================= */}
 
             {isOpen && (
+
                 <div className="ai-panel">
 
-                    {/* HEADER */}
+                    {/* =================================================
+                        HEADER
+                    ================================================= */}
+
                     <div className="ai-header">
 
                         <div className="ai-title">
 
                             <div className="ai-small-avatar">
+
                                 <img
                                     src={aiAgentIcon}
                                     alt="AI"
                                 />
+
                             </div>
 
                             <div>
+
                                 <h2>
-                                    SentinelCore AI
+                                    Cloud Security Monitoring System AI
                                 </h2>
 
                                 <span>
                                     Intelligent Security Assistant
                                 </span>
+
                             </div>
 
                         </div>
+
 
                         <div className="ai-header-right">
 
@@ -221,12 +353,18 @@ export default function AIAssistant() {
                     </div>
 
 
-                    {/* CHAT */}
+                    {/* =================================================
+                        CHAT WINDOW
+                    ================================================= */}
+
                     <div className="chat-window">
 
-                        {/* INITIAL MESSAGE */}
+                        {/* =================================================
+                            WELCOME
+                        ================================================= */}
 
                         {messages.length === 0 && (
+
                             <div className="ai-welcome">
 
                                 <img
@@ -240,8 +378,9 @@ export default function AIAssistant() {
                                 </h3>
 
                                 <p>
-                                    I am SentinelCore AI.
-                                    I can help you with
+                                    I am Cloud Security Monitoring System AI.
+                                    I can help you navigate
+                                    and work with your
                                     security operations,
                                     assets, alerts,
                                     vulnerabilities,
@@ -250,6 +389,7 @@ export default function AIAssistant() {
                                 </p>
 
                                 {!token && (
+
                                     <div className="login-required">
 
                                         🔐 Login required
@@ -257,108 +397,155 @@ export default function AIAssistant() {
                                         responses.
 
                                     </div>
+
                                 )}
 
                             </div>
                         )}
 
 
-                        {/* MESSAGES */}
+                        {/* =================================================
+                            MESSAGES
+                        ================================================= */}
 
-                        {messages.map(
-                            (item, index) => (
-                                <div
-                                    key={index}
-                                    className={
-                                        item.type === "user"
-                                            ? "user-message"
-                                            : "ai-message"
-                                    }
-                                >
+                        {messages.map((item, index) => (
 
-                                    {item.type === "user" ? (
-                                        <>
-                                            <strong>
-                                                You
-                                            </strong>
+                            <div
+                                key={index}
+                                className={
+                                    item.type === "user"
+                                        ? "user-message"
+                                        : "ai-message"
+                                }
+                            >
 
-                                            <p>
-                                                {item.text}
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="ai-message-header">
+                                {/* =================================================
+                                    USER
+                                ================================================= */}
 
-                                                <div className="message-avatar">
+                                {item.type === "user" ? (
 
-                                                    <img
-                                                        src={aiAgentIcon}
-                                                        alt="AI"
-                                                    />
+                                    <>
+                                        <strong>
+                                            You
+                                        </strong>
 
-                                                </div>
+                                        <p>
+                                            {item.text}
+                                        </p>
+                                    </>
 
-                                                <strong>
-                                                    SentinelCore AI
-                                                </strong>
+                                ) : (
+
+                                    <>
+                                        {/* =========================================
+                                            AI HEADER
+                                        ========================================= */}
+
+                                        <div className="ai-message-header">
+
+                                            <div className="message-avatar">
+
+                                                <img
+                                                    src={aiAgentIcon}
+                                                    alt="AI"
+                                                />
 
                                             </div>
 
-                                            <p>
-                                                {item.answer}
-                                            </p>
+                                            <strong>
+                                                Cloud Security Monitoring System AI
+                                            </strong>
 
-                                            {item.authRequired && (
-                                                <div className="login-required">
+                                        </div>
 
-                                                    🔐 Please login
-                                                    before using
-                                                    SentinelCore AI.
+
+                                        {/* =========================================
+                                            AI ANSWER
+                                        ========================================= */}
+
+                                        <p>
+                                            {item.answer}
+                                        </p>
+
+
+                                        {/* =========================================
+                                            NAVIGATION INFO
+                                        ========================================= */}
+
+                                        {item.action === "NAVIGATE" &&
+                                            item.route && (
+
+                                                <div className="ai-navigation-info">
+
+                                                    🧭 Opening:
+                                                    {" "}
+                                                    {item.route}
 
                                                 </div>
                                             )}
 
-                                            {item.suggestions &&
-                                                item.suggestions.length >
-                                                    0 && (
-                                                    <div className="suggestions">
 
-                                                        {item.suggestions.map(
-                                                            (
-                                                                suggestion,
-                                                                i
-                                                            ) => (
-                                                                <button
-                                                                    key={i}
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        handleSuggestion(
-                                                                            suggestion
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {
+                                        {/* =========================================
+                                            LOGIN REQUIRED
+                                        ========================================= */}
+
+                                        {item.authRequired && (
+
+                                            <div className="login-required">
+
+                                                🔐 Please login
+                                                before using
+                                                Cloud Security Monitoring System AI.
+
+                                            </div>
+                                        )}
+
+
+                                        {/* =========================================
+                                            SUGGESTIONS
+                                        ========================================= */}
+
+                                        {item.suggestions &&
+                                            item.suggestions.length > 0 && (
+
+                                                <div className="suggestions">
+
+                                                    {item.suggestions.map(
+                                                        (suggestion, i) => (
+
+                                                            <button
+                                                                key={i}
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleSuggestion(
                                                                         suggestion
-                                                                    }
-                                                                </button>
-                                                            )
-                                                        )}
+                                                                    )
+                                                                }
+                                                            >
+                                                                {suggestion}
+                                                            </button>
 
-                                                    </div>
-                                                )}
+                                                        )
+                                                    )}
 
-                                        </>
-                                    )}
+                                                </div>
+                                            )}
 
-                                </div>
-                            )
-                        )}
+                                    </>
+                                )}
+
+                            </div>
+
+                        ))}
 
 
-                        {/* LOADING */}
+                        {/* =================================================
+                            LOADING
+                        ================================================= */}
 
                         {loading && (
+
                             <div className="typing">
 
                                 <div className="typing-avatar">
@@ -366,12 +553,14 @@ export default function AIAssistant() {
                                 </div>
 
                                 <div className="typing-dots">
+
                                     <span></span>
                                     <span></span>
                                     <span></span>
+
                                 </div>
 
-                                SentinelCore AI is thinking...
+                                Cloud Security Monitoring System AI is thinking...
 
                             </div>
                         )}
@@ -379,7 +568,9 @@ export default function AIAssistant() {
                     </div>
 
 
-                    {/* INPUT */}
+                    {/* =================================================
+                        INPUT
+                    ================================================= */}
 
                     <div className="chat-input">
 
@@ -388,7 +579,7 @@ export default function AIAssistant() {
                             value={message}
                             placeholder={
                                 token
-                                    ? "Ask SentinelCore AI..."
+                                    ? "Ask Cloud Security Monitoring System AI..."
                                     : "Login required to use AI..."
                             }
                             onChange={(event) =>
@@ -419,17 +610,20 @@ export default function AIAssistant() {
                     </div>
 
 
-                    {/* SECURITY NOTICE */}
+                    {/* =================================================
+                        SECURITY NOTICE
+                    ================================================= */}
 
-                    <div className="ai-security-notice">
+                    {/* <div className="ai-security-notice">
 
                         🔒 AI responses require an
                         authenticated session.
 
-                    </div>
+                    </div> */}
 
                 </div>
             )}
+
         </>
     );
 }
