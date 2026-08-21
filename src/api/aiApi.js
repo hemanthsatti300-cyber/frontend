@@ -1,22 +1,18 @@
 import API from "./axios";
 
-/* =========================================================
-   ASK SENTINELCORE AI
-   ========================================================= */
+// =========================================================
+// ASK SENTINELCORE AI
+// =========================================================
 
 export const askAI = async (message) => {
 
-    /* =====================================================
-       VALIDATE MESSAGE
-    ===================================================== */
+    // =====================================================
+    // VALIDATE MESSAGE
+    // =====================================================
 
     if (!message || !message.trim()) {
         throw new Error("Please enter a message.");
     }
-
-    /* =====================================================
-       GET JWT TOKEN
-    ===================================================== */
 
     const token = localStorage.getItem("token");
 
@@ -25,17 +21,17 @@ export const askAI = async (message) => {
         token ? "Available" : "Not Available"
     );
 
-    /* =====================================================
-       IMPORTANT:
-       DO NOT CALL BACKEND WITHOUT TOKEN
-    ===================================================== */
+    // =====================================================
+    // NO TOKEN
+    // =====================================================
 
     if (!token) {
-
         return {
             authenticated: false,
-            answer:
-                "🔐 Please login to use SentinelCore AI.",
+            answer: "🔐 Please login to use SentinelCore AI.",
+            action: "NONE",
+            route: null,
+            data: null,
             suggestions: [
                 "Go to Login",
                 "How do I login?"
@@ -43,16 +39,16 @@ export const askAI = async (message) => {
         };
     }
 
-    /* =====================================================
-       CALL AI BACKEND
-    ===================================================== */
+    // =====================================================
+    // CALL BACKEND
+    // =====================================================
 
     try {
 
         const response = await API.post(
             "/ai/ask",
             {
-                message: message.trim(),
+                message: message.trim()
             }
         );
 
@@ -61,9 +57,42 @@ export const askAI = async (message) => {
             response.data
         );
 
+        // =================================================
+        // IMPORTANT
+        // Backend returns:
+        //
+        // {
+        //   message: "...",
+        //   action: "NAVIGATE",
+        //   route: "/cloud",
+        //   data: null
+        // }
+        //
+        // Frontend converts message -> answer
+        // =================================================
+
         return {
             authenticated: true,
-            ...response.data,
+
+            answer:
+                response.data?.message ||
+                "SentinelCore AI did not return a message.",
+
+            action:
+                response.data?.action ||
+                "NONE",
+
+            route:
+                response.data?.route ||
+                null,
+
+            data:
+                response.data?.data ||
+                null,
+
+            suggestions:
+                response.data?.suggestions ||
+                []
         };
 
     } catch (error) {
@@ -75,25 +104,103 @@ export const askAI = async (message) => {
             error
         );
 
-        /* =================================================
-           HANDLE UNAUTHORIZED
-        ================================================= */
+        // =================================================
+        // 401 UNAUTHORIZED
+        // =================================================
 
         if (error?.response?.status === 401) {
+
+            localStorage.removeItem("token");
 
             return {
                 authenticated: false,
                 answer:
                     "🔐 Your session has expired. Please login again.",
+                action: "NONE",
+                route: null,
+                data: null,
                 suggestions: [
                     "Login again"
                 ]
             };
         }
 
-        /* =================================================
-           OTHER ERROR
-        ================================================= */
+        // =================================================
+        // 403 FORBIDDEN
+        // =================================================
+
+        if (error?.response?.status === 403) {
+
+            return {
+                authenticated: true,
+                answer:
+                    "🚫 You are authenticated, but you are not authorized to use SentinelCore AI.",
+                action: "NONE",
+                route: null,
+                data: null,
+                suggestions: [
+                    "Contact administrator"
+                ]
+            };
+        }
+
+        // =================================================
+        // 404 NOT FOUND
+        // =================================================
+
+        if (error?.response?.status === 404) {
+
+            return {
+                authenticated: true,
+                answer:
+                    "❌ SentinelCore AI endpoint was not found.",
+                action: "NONE",
+                route: null,
+                data: null,
+                suggestions: [
+                    "Check the backend server"
+                ]
+            };
+        }
+
+        // =================================================
+        // SERVER ERROR
+        // =================================================
+
+        if (error?.response?.status >= 500) {
+
+            return {
+                authenticated: true,
+                answer:
+                    "⚠️ SentinelCore AI server error. Please try again later.",
+                action: "NONE",
+                route: null,
+                data: null,
+                suggestions: [
+                    "Try again"
+                ]
+            };
+        }
+
+        // =================================================
+        // NETWORK ERROR
+        // =================================================
+
+        if (!error?.response) {
+
+            return {
+                authenticated: true,
+                answer:
+                    "🌐 Unable to connect to SentinelCore AI server.",
+                action: "NONE",
+                route: null,
+                data: null,
+                suggestions: [
+                    "Check the backend server",
+                    "Try again"
+                ]
+            };
+        }
 
         throw error;
     }
