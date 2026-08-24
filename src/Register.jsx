@@ -168,6 +168,7 @@ function Register() {
             onChange={update}
           >
             <option value="USER">USER</option>
+             <option value="ITSM">ITSM</option>
             <option value="ADMIN">ADMIN</option>
           </select>
 
