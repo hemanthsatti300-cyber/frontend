@@ -149,7 +149,7 @@ const register = async (newUser) => {
 
         toast.error(
           error.response.data?.message ||
-          "Access denied."
+          "Username(or)Email is already Exist."
         );
 
         break;
