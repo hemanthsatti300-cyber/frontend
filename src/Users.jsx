@@ -1037,7 +1037,7 @@ export default function Users() {
 
                               {/* DELETE */}
 
-                              <button
+                              {/* <button
                                 type="button"
                                 className="delete-btn"
                                 title="Delete User"
@@ -1050,7 +1050,7 @@ export default function Users() {
 
                                 <FaTrash />
 
-                              </button>
+                              </button> */}
 
                             </div>
 
