@@ -161,7 +161,7 @@ function Register() {
             value={form.department}
             onChange={update}
           />
-
+      <label htmlFor="role">Select Role:</label>
           <select
             name="role"
             value={form.role}
