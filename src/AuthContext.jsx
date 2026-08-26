@@ -118,7 +118,7 @@ const register = async (newUser) => {
     if (!error.response) {
 
       toast.error(
-        "Unable to connect to the server."
+        "Unable to connect to the server.Please Try After 2-3 min."
       );
 
       return false;
