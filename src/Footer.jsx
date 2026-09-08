@@ -50,7 +50,7 @@ function Footer() {
 
       <div className="footer-right">
         <a
-          href="https://github.com"
+          href="https://github.com/hemanthReddy-software"
           target="_blank"
           rel="noreferrer"
         >
@@ -58,7 +58,7 @@ function Footer() {
         </a>
 
         <a
-          href="https://linkedin.com"
+          href="https://www.linkedin.com/in/satti-hemanth-narasimha-appi-reddy-8aa2ba236?original_referer=https%3A%2F%2Fhemanthsatti.netlify.app%2F"
           target="_blank"
           rel="noreferrer"
         >
